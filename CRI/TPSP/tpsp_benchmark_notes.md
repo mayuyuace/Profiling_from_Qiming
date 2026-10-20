@@ -149,16 +149,114 @@ mpirun --allow-run-as-root -n 2 env \
 
 ---
 
+## 五之二、优化：加 `RING_REDUCE_SCATTER_UNPERMUTE_PULL_MAX_WG=64` 后复测
+
+在上面所有命令前统一加环境变量 `RING_REDUCE_SCATTER_UNPERMUTE_PULL_MAX_WG=64`（限制
+pull 模式 reduce_scatter+unpermute 的 work-group 数）重跑，其它参数不变
+（FUSION_RING_COMBINE=pull，tp=2，真实 shape）。mxfp8 口径为 w8a8（GEMM/MoE 都 mxfp8）。
+
+### 配置1：mxfp8 / w8a8（GEMM 和 MoE 都 mxfp8）
+
+| 算子 | 融合(Symm) | 非融合(Fallback) | 融合 vs 非融合 |
+|---|---|---|---|
+| AG+GEMM (qkv) | 0.601 | 0.672 | 融合快 11% ✅ |
+| GEMM+RS (o_proj) | 0.632 | 0.781 | 融合快 19% ✅ |
+| MoE dispatch (fp8) | 0.146 | 0.237 | 融合快 38% ✅ |
+| **MoE combine (bf16)** | **0.328** | 0.356 | **融合快 8% ✅（已转正）** |
+
+### 配置2：bf16
+
+| 算子 | 融合(Symm) | 非融合(Fallback) | 融合 vs 非融合 |
+|---|---|---|---|
+| AG+GEMM (qkv) | 0.346 | 0.460 | 融合快 25% ✅ |
+| GEMM+RS (o_proj) | 0.464 | 0.605 | 融合快 23% ✅ |
+| MoE dispatch (bf16) | 0.242 | 0.458 | 融合快 47% ✅ |
+| **MoE combine (bf16)** | **0.322** | 0.359 | **融合快 10% ✅（已转正）** |
+
+### MoE combine 对比（128MB，前后）
+
+| MoE combine | 原值（无此变量） | 加 WG=64 后 |
+|---|---|---|
+| 配置1 (mxfp8) | 0.509 ❌ 慢 ~40% | **0.328 ✅ 快 8%** |
+| 配置2 (bf16)  | 0.503 ❌ 慢 40%  | **0.322 ✅ 快 10%** |
+
+**结论：`RING_REDUCE_SCATTER_UNPERMUTE_PULL_MAX_WG=64` 把 combine 融合从 ~0.50ms 降到
+~0.32ms（提速约 36%），从「比 fallback 慢 40%」翻转为「比 fallback 快 8~10%」，
+消除了 combine 劣化。** dispatch 和 linear 算子不受影响，仍全是正收益。
+
+---
+
+## 五之三、TP=4 复测（同样加 `RING_REDUCE_SCATTER_UNPERMUTE_PULL_MAX_WG=64`）
+
+mpirun `-n 4`。全局 4096 token，tp=4 切分后真实 shape：
+- AG+GEMM (qkv)：M=每卡token=1024，N=qkv输出每卡=5120/4=1280，K=hidden=2048
+- GEMM+RS (o_proj)：M=全局token=4096，N=hidden=2048，K=attn输出每卡=4096/4=1024
+- MoE：SYMM_TOKENS_PER_RANK=4096/4=1024
+
+命令（mxfp8 示例，bf16 去掉 scale_mode / 换非 v2 test，MoE 加 SYMM_DTYPE=bfloat16）：
+```bash
+mpirun --allow-run-as-root -n 4 env RING_REDUCE_SCATTER_UNPERMUTE_PULL_MAX_WG=64 \
+  python -u tests/test_allgather_scaled_matmul_v2.py 1024 1280 2048 --scale_mode mxfp8-sharded
+mpirun --allow-run-as-root -n 4 env RING_REDUCE_SCATTER_UNPERMUTE_PULL_MAX_WG=64 \
+  python -u tests/test_fused_scaled_matmul_v2_reducescatter.py 4096 2048 1024 --scale_mode mxfp8
+mpirun --allow-run-as-root -n 4 env RING_REDUCE_SCATTER_UNPERMUTE_PULL_MAX_WG=64 \
+  FUSION_RING_COMBINE=pull SYMM_TOKENS_PER_RANK=1024 SYMM_HIDDEN_SIZE=2048 \
+  SYMM_TOPK=8 SYMM_NUM_EXPERTS=128 python -u tests/test_symm_buffer_fusion_perf.py
+```
+
+### 配置1：mxfp8 / w8a8
+
+| 算子 | shape | 融合(Symm) | 非融合(Fallback) | 融合 vs 非融合 |
+|---|---|---|---|---|
+| AG+GEMM (qkv) | M1024 N1280 K2048 | 1.362 | 1.120 | **融合慢 22% ❌** |
+| GEMM+RS (o_proj) | M4096 N2048 K1024 | 0.744 | 0.938 | 融合快 21% ✅ |
+| MoE dispatch (fp8) | tok1024 | 0.186 | 0.275 | 融合快 32% ✅ |
+| MoE combine (bf16) | 128MB | 0.426 | 0.451 | 融合快 6% ✅ |
+
+### 配置2：bf16
+
+| 算子 | shape | 融合(Symm) | 非融合(Fallback) | 融合 vs 非融合 |
+|---|---|---|---|---|
+| AG+GEMM (qkv) | M1024 N1280 K2048 | 0.468 | 0.571 | 融合快 18% ✅ |
+| GEMM+RS (o_proj) | M4096 N2048 K1024 | 0.526 | 0.902 | 融合快 42% ✅ |
+| MoE dispatch (bf16) | tok1024 | 0.321 | 0.549 | 融合快 42% ✅ |
+| MoE combine (bf16) | 128MB | 0.421 | 0.452 | 融合快 7% ✅ |
+
+### TP=2 vs TP=4（mxfp8）对比
+
+| 算子 | TP=2 mxfp8 | TP=4 mxfp8 |
+|---|---|---|
+| AG+GEMM (qkv) | 快 11% ✅ | **慢 22% ❌** ← 唯一翻转 |
+| GEMM+RS (o_proj) | 快 19% ✅ | 快 21% ✅ |
+| MoE dispatch | 快 38% ✅ | 快 32% ✅ |
+| MoE combine | 快 8% ✅ | 快 6% ✅ |
+
+**要点**：
+1. **MoE combine 在 TP=4 下依然正收益**（配置1 +6%、配置2 +7%），`RING_...WG=64` 优化在 TP=4 同样有效。
+2. **新劣化点：mxfp8 的 AG+GEMM(qkv) 在 TP=4 融合慢 22% ❌**（TP=2 没有）。原因：tp=4 下 qkv shape
+   变小（M=1024, N=1280），GEMM 计算量不足以盖过 all_gather 融合的 symm-memory/barrier 开销，
+   小 shape 下融合反而亏。注意 **bf16 的 AG+GEMM 在 TP=4 仍快 18% ✅，只有 mxfp8 劣化** ——
+   推测 mxfp8 scaled-matmul 在该小 shape 下 kernel 效率更低，放大了融合开销。
+3. **其余算子（GEMM+RS、MoE dispatch/combine）TP=4 两配置全是正收益。**
+4. **建议**：TP=4 下对 mxfp8 的 qkv_proj 关掉 fuse-gemm-comms（或该小 shape 回退非融合 AG），
+   其余照常开融合。
+
+---
+
 ## 六、结论
 
 1. **TPSP 变慢的元凶 = MoE combine（unpermute + reduce_scatter 融合算子）**。
    - 两种配置下，所有 fused-comm 算子的融合都是正收益（9~47%），**唯独 MoE combine 融合劣化 ~40%**。
    - combine 是最大单项（128MB expert output，~0.5ms/层 × 48层 ≈ 24ms/step），这一项的劣化足以吃掉其它所有融合收益，导致 TPSP 整体变慢。
+   - **✅ 已解决：加 `RING_REDUCE_SCATTER_UNPERMUTE_PULL_MAX_WG=64` 后 combine 从 0.50→0.32ms
+     转正（见第五之二节）。这是消除 combine 劣化、让 TPSP 整体转正的关键开关。**
 
 2. **规律**：all_gather / dispatch 侧的融合都赢；reduce_scatter 侧，linear 的 GEMM+RS（小 shape）融合还赢，但 **MoE combine（大数据量 reduce_scatter + unpermute）融合劣化** —— 数据量大时融合的收益被 barrier / symm-memory 开销盖过。
 
 3. **--enable-eager-sp-fuse-gemm-comms（控制 attn/MLP linear 的 AG+GEMM、GEMM+RS 融合）在真实 shape 下是正收益，应该开**。它不是变慢的原因。
    - 注意：用 benchmark **默认大 shape**（M=8192/K=8192）测 GEMM+RS 会得出「融合劣化」的错误结论 —— **必须用真实 shape 测**。
+   - **TP=4 例外**：mxfp8 的 AG+GEMM(qkv) 在 tp=4 的小 shape（M1024 N1280）下融合劣化（慢 22%，见第五之三节）。
+     tp=4 建议对 mxfp8 qkv_proj 关掉 fuse-gemm-comms，其余照常开。GEMM+RS / bf16 的 AG+GEMM 在 tp=4 仍正收益。
 
 ---
 
@@ -169,7 +267,10 @@ benchmark 是隔离测单算子，定位了方向（MoE combine 劣化）。**�
 1. **整步 wall time 对比（最直接）**：SP=1 vs SP=0 的 `forward_device_ms`（steps.csv），确认 TPSP 整步慢多少、慢在 prefill 还是 decode。
 2. **MoE combine 段 wall time**：在 model.py / deepsymm finalize 处插 torch.xpu.Event，量 combine 这段的真实墙钟，和 benchmark 对照。
    - 注意 profiling 的 per-kernel self-time 之和 **消不掉 overlap**，不能直接加总当运行时间；评估 overlap 收益必须用 wall time（Event 或 forward_device_ms）。
-3. **验证优化方向**：试 FUSION_RING_COMBINE=push / 0(staged) 等 combine 模式，看能否让 combine 不劣化 → TPSP 转正。combine 的 fallback（非融合）是 0.36ms，若某模式能逼近/低于它则有戏。
+3. **验证优化方向**：~~试 FUSION_RING_COMBINE=push / 0(staged) 等 combine 模式~~。
+   **✅ 已找到解法：`RING_REDUCE_SCATTER_UNPERMUTE_PULL_MAX_WG=64`（pull 模式下）即可让
+   combine 从 0.50 降到 0.32ms、低于 fallback 0.36ms（见第五之二节）。** 下一步在模型里
+   带上这个环境变量实测整步 wall time，确认 TPSP 整体从「变慢」翻转为正收益。
 
 待补测（benchmark 侧，可选）：
 - FUSION_RING_COMBINE 的 pull / push / 0 三种模式对 MoE combine 的影响扫描。
