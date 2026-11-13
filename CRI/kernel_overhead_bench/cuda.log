@@ -1,0 +1,22 @@
+device: NVIDIA RTX PRO 5000 72GB Blackwell
+case          WG  SG  rows median(us)    min(us)
+empty        512  32     1      0.704      0.671
+empty        512  32    32      0.736      0.704
+read         512  32     1      1.216      1.184
+read         512  32    32      1.344      1.312
+read+bar1    512  32     1      1.216      1.183
+read+bar1    512  32    32      1.344      1.311
+read+bar5    512  32     1      1.216      1.184
+read+bar5    512  32    32      1.344      1.312
+read+alu     256  32     1      1.600      1.568
+read+alu     256  32    32      1.664      1.631
+read+alu     512  32     1      1.216      1.184
+read+alu     512  32    32      1.344      1.311
+read+alu    1024  32     1      1.216      1.183
+read+alu    1024  32    32      1.344      1.280
+read+atom    256  32     1      2.208      2.207
+read+atom    256  32    32      2.272      2.240
+read+atom    512  32     1      1.856      1.823
+read+atom    512  32    32      1.920      1.887
+read+atom   1024  32     1      1.664      1.663
+read+atom   1024  32    32      1.792      1.760
