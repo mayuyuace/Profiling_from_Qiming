@@ -1,0 +1,17 @@
+device       : NVIDIA RTX PRO 5000 72GB Blackwell (sm_120)
+compute units: 110 SMs
+max clock    : 2377 MHz
+launch       : 256 threads / block, warp 32
+
+[fma ] 0.507 ms  33.89 T fma/s (lane-ops)  67.78 TFLOP/s
+[int ] 1.948 ms  17.64 T int-ops/s (xor+add, lane-ops)
+
+[sweep] read 1 GiB fp32 + K topk rounds per element
+  K=0       0.870 ms   1233.7 GB/s   308.43 Gelem/s  x1.00 of K=0
+  K=1       0.870 ms   1234.2 GB/s   308.54 Gelem/s  x1.00 of K=0
+  K=2       0.870 ms   1234.0 GB/s   308.50 Gelem/s  x1.00 of K=0
+  K=4       0.871 ms   1233.1 GB/s   308.27 Gelem/s  x1.00 of K=0
+  K=8       0.872 ms   1231.5 GB/s   307.88 Gelem/s  x1.00 of K=0
+  K=16      1.025 ms   1047.3 GB/s   261.82 Gelem/s  x1.18 of K=0
+  K=32      1.974 ms    544.0 GB/s   136.00 Gelem/s  x2.27 of K=0
+  K=64      3.937 ms    272.7 GB/s    68.18 Gelem/s  x4.52 of K=0

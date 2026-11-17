@@ -1,0 +1,118 @@
+.version 4.2
+
+.kernel "_ZTS6SweepKILi0EE"
+
+/// VISA Predefined Variables
+// .decl V0 v_type=G v_name=%null
+// .decl V1 v_type=G v_name=%thread_x
+// .decl V2 v_type=G v_name=%thread_y
+// .decl V3 v_type=G v_name=%group_id_x
+// .decl V4 v_type=G v_name=%group_id_y
+// .decl V5 v_type=G v_name=%group_id_z
+// .decl V6 v_type=G v_name=%tsc
+// .decl V7 v_type=G v_name=%r0
+// .decl V8 v_type=G v_name=%arg
+// .decl V9 v_type=G v_name=%retval
+// .decl V10 v_type=G v_name=%sp
+// .decl V11 v_type=G v_name=%fp
+// .decl V12 v_type=G v_name=%hw_id
+// .decl V13 v_type=G v_name=%sr0
+// .decl V14 v_type=G v_name=%cr0
+// .decl V15 v_type=G v_name=%ce0
+// .decl V16 v_type=G v_name=%dbg0
+// .decl V17 v_type=G v_name=%color
+// .decl V18 v_type=G v_name=%impl_arg_buf_ptr
+// .decl V19 v_type=G v_name=%local_id_buf_ptr
+// .decl V20 v_type=G v_name=%msg0
+// .decl V21 v_type=G v_name=%scratchloc
+// .decl T0 v_type=T v_name=%slm
+// .decl T1 v_type=T v_name=T1
+// .decl T2 v_type=T v_name=T2
+// .decl T3 v_type=T v_name=TSS
+// .decl T4 v_type=T v_name=%bss
+// .decl T5 v_type=T v_name=%scratch
+
+.decl V0032 v_type=G type=d num_elts=16 align=wordx32
+.decl V0033 v_type=G type=d num_elts=16 align=wordx32 alias=<%r0, 0>
+.decl V0034 v_type=G type=uq num_elts=1 align=qword
+.decl V0035 v_type=G type=d num_elts=1 align=dword
+.decl V0036 v_type=G type=uq num_elts=1 align=qword
+.decl V0037 v_type=G type=d num_elts=8 align=hword
+.decl V0038 v_type=G type=d num_elts=8 align=wordx32 alias=<%r0, 0>
+.decl V0039 v_type=G type=d num_elts=3 align=dword
+.decl V0040 v_type=G type=w num_elts=32 align=hword
+.decl V0041 v_type=G type=w num_elts=32 align=hword
+.decl V0042 v_type=G type=w num_elts=32 align=hword
+.decl V0043 v_type=G type=uq num_elts=1 align=qword
+.decl V0044 v_type=G type=uq num_elts=1 align=hword
+.decl V0045 v_type=G type=uq num_elts=1 align=qword
+.decl V0046 v_type=G type=d num_elts=1 align=dword
+.decl V0047 v_type=G type=d num_elts=1 align=dword
+.decl V0048 v_type=G type=d num_elts=1 align=dword
+.decl V0049 v_type=G type=d num_elts=1 align=dword
+.decl V0050 v_type=G type=q num_elts=1 align=qword
+.decl V0051 v_type=G type=ud num_elts=8 align=hword alias=<V0038, 0>
+.decl V0052 v_type=G type=q num_elts=1 align=qword
+.decl V0053 v_type=G type=q num_elts=1 align=qword alias=<V0034, 0>
+.decl V0054 v_type=G type=q num_elts=1 align=qword
+.decl V0055 v_type=G type=q num_elts=32 align=wordx32
+.decl V0056 v_type=G type=uw num_elts=32 align=hword alias=<V0040, 0>
+.decl V0057 v_type=G type=d num_elts=128 align=wordx32
+.decl V0058 v_type=G type=d num_elts=128 align=wordx32
+.decl V0059 v_type=G type=d num_elts=128 align=wordx32
+.decl V0060 v_type=G type=d num_elts=128 align=wordx32
+.decl V0061 v_type=G type=d num_elts=32 align=wordx32
+.decl V0062 v_type=G type=d num_elts=32 align=wordx32
+.decl V0063 v_type=G type=d num_elts=32 align=wordx32
+.decl V0064 v_type=G type=d num_elts=32 align=wordx32
+.decl V0065 v_type=G type=d num_elts=32 align=wordx32
+.decl V0066 v_type=G type=d num_elts=32 align=wordx32
+.decl V0067 v_type=G type=d num_elts=32 align=wordx32
+.decl V0068 v_type=G type=d num_elts=32 align=wordx32
+.decl V0069 v_type=G type=uq num_elts=1 align=wordx32
+.decl V0070 v_type=G type=d num_elts=1 align=wordx32
+.decl P1 v_type=P num_elts=32
+.decl S0 v_type=S num_elts=1 v_name=S000
+.decl T6 v_type=T num_elts=1 v_name=T006
+.input V0040 offset=64 size=64
+.input V0044 offset=128 size=8
+.input V0045 offset=136 size=8
+.input V0034 offset=144 size=8
+.input V0036 offset=152 size=8
+.input V0035 offset=160 size=4
+.kernel_attr Target="3d"
+.kernel_attr SimdSize=32
+.kernel_attr PerThreadInputSize=64    
+
+.function "_main_0"
+_main_0:
+    or (M1_NM, 1) %cr0(0,0)<1> %cr0(0,0)<0;1,0> 0x400004c0:ud                    /// $1
+    mov (M1_NM, 1) V0050(0,0)<1> V0051(0,1)<0;1,0>                               /// $2
+    shl (M1_NM, 1) V0052(0,0)<1> V0050(0,0)<0;1,0> 0xe:q                         /// $3
+    add (M1_NM, 1) V0054(0,0)<1> V0052(0,0)<0;1,0> V0053(0,0)<0;1,0>             /// $4
+    mov (M1, 32) V0055(0,0)<1> V0056(0,0)<1;1,0>                                 /// $5
+    lsc_load.ugm (M1, 32)  V0057:d32x4  flat(V0054)[0x10*V0055]:a64              /// $6
+    lsc_load.ugm (M1, 32)  V0058:d32x4  flat(V0054)[0x10*V0055+0x1000]:a64       /// $7
+    lsc_load.ugm (M1, 32)  V0059:d32x4  flat(V0054)[0x10*V0055+0x2000]:a64       /// $8
+    lsc_load.ugm (M1, 32)  V0060:d32x4  flat(V0054)[0x10*V0055+0x3000]:a64       /// $9
+    add (M1, 32) V0061(0,0)<1> V0057(0,0)<1;1,0> V0057(2,0)<1;1,0>               /// $10
+    add3 (M1, 32) V0062(0,0)<1> V0061(0,0)<1;1,0> V0057(4,0)<1;1,0> V0057(6,0)<1;1,0> /// $11
+    add3 (M1, 32) V0063(0,0)<1> V0062(0,0)<1;1,0> V0058(0,0)<1;1,0> V0058(2,0)<1;1,0> /// $12
+    add3 (M1, 32) V0064(0,0)<1> V0063(0,0)<1;1,0> V0058(4,0)<1;1,0> V0058(6,0)<1;1,0> /// $13
+    add3 (M1, 32) V0065(0,0)<1> V0064(0,0)<1;1,0> V0059(0,0)<1;1,0> V0059(2,0)<1;1,0> /// $14
+    add3 (M1, 32) V0066(0,0)<1> V0065(0,0)<1;1,0> V0059(4,0)<1;1,0> V0059(6,0)<1;1,0> /// $15
+    add3 (M1, 32) V0067(0,0)<1> V0066(0,0)<1;1,0> V0060(0,0)<1;1,0> V0060(2,0)<1;1,0> /// $16
+    add3 (M1, 32) V0068(0,0)<1> V0067(0,0)<1;1,0> V0060(4,0)<1;1,0> V0060(6,0)<1;1,0> /// $17
+    cmp.eq (M1, 32) P1 V0068(0,0)<1;1,0> V0035(0,0)<0;1,0>                       /// $18
+    (!P1) goto (M1, 32) _0_004                                                   /// $19
+
+_0_005:
+    mov (M1_NM, 1) V0069(0,0)<1> V0036(0,0)<0;1,0>                               /// $21
+    mov (M1_NM, 1) V0070(0,0)<1> V0035(0,0)<0;1,0>                               /// $22
+    lsc_store.ugm (M1_NM, 1)  flat[V0069]:a64  V0070:d32t                        /// $23
+
+_0_004:
+    ret (M1, 1)                                                                  /// $25
+
+//Platform: XE3P_CRI
+//Build option: "-emitLocation -autoGRFSelection -wideMulMadOpsEn -enableCoalesceScalarMoves -supportLSCImmScale 0 -samplerHeaderWA -enablePreemption -hasRNEandDenorm -noStitchExternFunc -useInlineData -emitCrossThreadOffR0Reloc -abortOnSpill 4 -enableBCR -forceBCR -bumpGRFForForceBCR -enableBundleCR 3 -freqBasedSpillCost 8 -freqBasedSpillCostFunc 1 -boundsChecking -presched-ctrl 6 -presched-rp 90 -nodpsendreorder -SBIDDepLoc -PVCSendWARWA -output -binary -dumpcommonisa -dumpcombinedcisa -dumpvisa -printHexFloatInAsm -noverifyCISA -enableHalfLSC -partialInt64 -activeThreadsOnlyBarrier -hashmovs 1382885771 1995166688 -hashmovs1 0 3 -enableEfficient64b -GRFBumpUpNumber 2 -waSlmGOS20 "

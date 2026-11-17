@@ -1,0 +1,201 @@
+; ------------------------------------------------
+; OCL_asm76a47ec9908e3b28_simd32_entry_0001.visa.ll
+; ------------------------------------------------
+; Function Attrs: convergent nounwind null_pointer_is_valid
+define spir_kernel void @_ZTS6SweepKILi1EE(ptr addrspace(1) align 4 %0, float %1, float %2, i32 %3, ptr addrspace(1) align 4 %4, <8 x i32> %r0, <3 x i32> %globalOffset, i16 %localIdX, i16 %localIdY, i16 %localIdZ, ptr %privateBase, ptr addrspace(1) %indirectDataPointer, ptr addrspace(1) %scratchPointer, i32 %bufferOffset, i32 %bufferOffset1, i32 %bindlessOffset, i32 %bindlessOffset2) #0 {
+.preheader.preheader:
+; BB0 :
+  %5 = extractelement <8 x i32> %r0, i32 1		; visa id: 2
+  %6 = zext nneg i32 %5 to i64		; visa id: 2
+  %.idx = shl nuw nsw i64 %6, 14		; visa id: 3
+  %7 = ptrtoint ptr addrspace(1) %0 to i64		; visa id: 4
+  %8 = add i64 %.idx, %7		; visa id: 4
+  %9 = zext i16 %localIdX to i64		; visa id: 5
+  %10 = shl nuw nsw i64 %9, 4
+  %11 = add i64 %8, %10
+  %12 = inttoptr i64 %11 to ptr addrspace(1)
+  %13 = load <4 x float>, ptr addrspace(1) %12, align 16		; visa id: 6
+  %14 = extractelement <4 x float> %13, i32 0		; visa id: 7
+  %15 = extractelement <4 x float> %13, i32 1		; visa id: 7
+  %16 = extractelement <4 x float> %13, i32 2		; visa id: 7
+  %17 = extractelement <4 x float> %13, i32 3		; visa id: 7
+  %18 = add i64 %11, 4096
+  %19 = inttoptr i64 %18 to ptr addrspace(1)
+  %20 = load <4 x float>, ptr addrspace(1) %19, align 16		; visa id: 7
+  %21 = extractelement <4 x float> %20, i32 0		; visa id: 8
+  %22 = extractelement <4 x float> %20, i32 1		; visa id: 8
+  %23 = extractelement <4 x float> %20, i32 2		; visa id: 8
+  %24 = extractelement <4 x float> %20, i32 3		; visa id: 8
+  %25 = add i64 %11, 8192
+  %26 = inttoptr i64 %25 to ptr addrspace(1)
+  %27 = load <4 x float>, ptr addrspace(1) %26, align 16		; visa id: 8
+  %28 = extractelement <4 x float> %27, i32 0		; visa id: 9
+  %29 = extractelement <4 x float> %27, i32 1		; visa id: 9
+  %30 = extractelement <4 x float> %27, i32 2		; visa id: 9
+  %31 = extractelement <4 x float> %27, i32 3		; visa id: 9
+  %32 = add i64 %11, 12288
+  %33 = inttoptr i64 %32 to ptr addrspace(1)
+  %34 = load <4 x float>, ptr addrspace(1) %33, align 16		; visa id: 9
+  %35 = extractelement <4 x float> %34, i32 0		; visa id: 10
+  %36 = extractelement <4 x float> %34, i32 1		; visa id: 10
+  %37 = extractelement <4 x float> %34, i32 2		; visa id: 10
+  %38 = extractelement <4 x float> %34, i32 3		; visa id: 10
+  %39 = call noundef float @llvm.fma.f32(float %14, float %1, float %2)		; visa id: 10
+  %40 = fptrunc float %39 to half		; visa id: 11
+  %41 = bitcast half %40 to i16
+  %42 = icmp sgt i16 %41, -1		; visa id: 12
+  %43 = select i1 %42, i32 32768, i32 65520		; visa id: 13
+  %44 = zext i16 %41 to i32		; visa id: 14
+  %45 = xor i32 %43, %44		; visa id: 15
+  %46 = lshr i32 %45, 4		; visa id: 16
+  %47 = call noundef float @llvm.fma.f32(float %15, float %1, float %2)		; visa id: 17
+  %48 = fptrunc float %47 to half		; visa id: 18
+  %49 = bitcast half %48 to i16
+  %50 = icmp sgt i16 %49, -1		; visa id: 19
+  %51 = select i1 %50, i32 32768, i32 65520		; visa id: 20
+  %52 = zext i16 %49 to i32		; visa id: 21
+  %53 = xor i32 %51, %52		; visa id: 22
+  %54 = lshr i32 %53, 4		; visa id: 23
+  %55 = add nuw nsw i32 %46, %54		; visa id: 24
+  %56 = call noundef float @llvm.fma.f32(float %16, float %1, float %2)		; visa id: 25
+  %57 = fptrunc float %56 to half		; visa id: 26
+  %58 = bitcast half %57 to i16
+  %59 = icmp sgt i16 %58, -1		; visa id: 27
+  %60 = select i1 %59, i32 32768, i32 65520		; visa id: 28
+  %61 = zext i16 %58 to i32		; visa id: 29
+  %62 = xor i32 %60, %61		; visa id: 30
+  %63 = lshr i32 %62, 4		; visa id: 31
+  %64 = add nuw nsw i32 %55, %63
+  %65 = call noundef float @llvm.fma.f32(float %17, float %1, float %2)		; visa id: 32
+  %66 = fptrunc float %65 to half		; visa id: 33
+  %67 = bitcast half %66 to i16
+  %68 = icmp sgt i16 %67, -1		; visa id: 34
+  %69 = select i1 %68, i32 32768, i32 65520		; visa id: 35
+  %70 = zext i16 %67 to i32		; visa id: 36
+  %71 = xor i32 %69, %70		; visa id: 37
+  %72 = lshr i32 %71, 4		; visa id: 38
+  %73 = add nuw nsw i32 %64, %72		; visa id: 39
+  %74 = call noundef float @llvm.fma.f32(float %21, float %1, float %2)		; visa id: 40
+  %75 = fptrunc float %74 to half		; visa id: 41
+  %76 = bitcast half %75 to i16
+  %77 = icmp sgt i16 %76, -1		; visa id: 42
+  %78 = select i1 %77, i32 32768, i32 65520		; visa id: 43
+  %79 = zext i16 %76 to i32		; visa id: 44
+  %80 = xor i32 %78, %79		; visa id: 45
+  %81 = lshr i32 %80, 4		; visa id: 46
+  %82 = add nuw nsw i32 %73, %81
+  %83 = call noundef float @llvm.fma.f32(float %22, float %1, float %2)		; visa id: 47
+  %84 = fptrunc float %83 to half		; visa id: 48
+  %85 = bitcast half %84 to i16
+  %86 = icmp sgt i16 %85, -1		; visa id: 49
+  %87 = select i1 %86, i32 32768, i32 65520		; visa id: 50
+  %88 = zext i16 %85 to i32		; visa id: 51
+  %89 = xor i32 %87, %88		; visa id: 52
+  %90 = lshr i32 %89, 4		; visa id: 53
+  %91 = add nuw nsw i32 %82, %90		; visa id: 54
+  %92 = call noundef float @llvm.fma.f32(float %23, float %1, float %2)		; visa id: 55
+  %93 = fptrunc float %92 to half		; visa id: 56
+  %94 = bitcast half %93 to i16
+  %95 = icmp sgt i16 %94, -1		; visa id: 57
+  %96 = select i1 %95, i32 32768, i32 65520		; visa id: 58
+  %97 = zext i16 %94 to i32		; visa id: 59
+  %98 = xor i32 %96, %97		; visa id: 60
+  %99 = lshr i32 %98, 4		; visa id: 61
+  %100 = add nuw nsw i32 %91, %99
+  %101 = call noundef float @llvm.fma.f32(float %24, float %1, float %2)		; visa id: 62
+  %102 = fptrunc float %101 to half		; visa id: 63
+  %103 = bitcast half %102 to i16
+  %104 = icmp sgt i16 %103, -1		; visa id: 64
+  %105 = select i1 %104, i32 32768, i32 65520		; visa id: 65
+  %106 = zext i16 %103 to i32		; visa id: 66
+  %107 = xor i32 %105, %106		; visa id: 67
+  %108 = lshr i32 %107, 4		; visa id: 68
+  %109 = add nuw nsw i32 %100, %108		; visa id: 69
+  %110 = call noundef float @llvm.fma.f32(float %28, float %1, float %2)		; visa id: 70
+  %111 = fptrunc float %110 to half		; visa id: 71
+  %112 = bitcast half %111 to i16
+  %113 = icmp sgt i16 %112, -1		; visa id: 72
+  %114 = select i1 %113, i32 32768, i32 65520		; visa id: 73
+  %115 = zext i16 %112 to i32		; visa id: 74
+  %116 = xor i32 %114, %115		; visa id: 75
+  %117 = lshr i32 %116, 4		; visa id: 76
+  %118 = add nuw nsw i32 %109, %117
+  %119 = call noundef float @llvm.fma.f32(float %29, float %1, float %2)		; visa id: 77
+  %120 = fptrunc float %119 to half		; visa id: 78
+  %121 = bitcast half %120 to i16
+  %122 = icmp sgt i16 %121, -1		; visa id: 79
+  %123 = select i1 %122, i32 32768, i32 65520		; visa id: 80
+  %124 = zext i16 %121 to i32		; visa id: 81
+  %125 = xor i32 %123, %124		; visa id: 82
+  %126 = lshr i32 %125, 4		; visa id: 83
+  %127 = add nuw nsw i32 %118, %126		; visa id: 84
+  %128 = call noundef float @llvm.fma.f32(float %30, float %1, float %2)		; visa id: 85
+  %129 = fptrunc float %128 to half		; visa id: 86
+  %130 = bitcast half %129 to i16
+  %131 = icmp sgt i16 %130, -1		; visa id: 87
+  %132 = select i1 %131, i32 32768, i32 65520		; visa id: 88
+  %133 = zext i16 %130 to i32		; visa id: 89
+  %134 = xor i32 %132, %133		; visa id: 90
+  %135 = lshr i32 %134, 4		; visa id: 91
+  %136 = add nuw nsw i32 %127, %135
+  %137 = call noundef float @llvm.fma.f32(float %31, float %1, float %2)		; visa id: 92
+  %138 = fptrunc float %137 to half		; visa id: 93
+  %139 = bitcast half %138 to i16
+  %140 = icmp sgt i16 %139, -1		; visa id: 94
+  %141 = select i1 %140, i32 32768, i32 65520		; visa id: 95
+  %142 = zext i16 %139 to i32		; visa id: 96
+  %143 = xor i32 %141, %142		; visa id: 97
+  %144 = lshr i32 %143, 4		; visa id: 98
+  %145 = add nuw nsw i32 %136, %144		; visa id: 99
+  %146 = call noundef float @llvm.fma.f32(float %35, float %1, float %2)		; visa id: 100
+  %147 = fptrunc float %146 to half		; visa id: 101
+  %148 = bitcast half %147 to i16
+  %149 = icmp sgt i16 %148, -1		; visa id: 102
+  %150 = select i1 %149, i32 32768, i32 65520		; visa id: 103
+  %151 = zext i16 %148 to i32		; visa id: 104
+  %152 = xor i32 %150, %151		; visa id: 105
+  %153 = lshr i32 %152, 4		; visa id: 106
+  %154 = add nuw nsw i32 %145, %153
+  %155 = call noundef float @llvm.fma.f32(float %36, float %1, float %2)		; visa id: 107
+  %156 = fptrunc float %155 to half		; visa id: 108
+  %157 = bitcast half %156 to i16
+  %158 = icmp sgt i16 %157, -1		; visa id: 109
+  %159 = select i1 %158, i32 32768, i32 65520		; visa id: 110
+  %160 = zext i16 %157 to i32		; visa id: 111
+  %161 = xor i32 %159, %160		; visa id: 112
+  %162 = lshr i32 %161, 4		; visa id: 113
+  %163 = add nuw nsw i32 %154, %162		; visa id: 114
+  %164 = call noundef float @llvm.fma.f32(float %37, float %1, float %2)		; visa id: 115
+  %165 = fptrunc float %164 to half		; visa id: 116
+  %166 = bitcast half %165 to i16
+  %167 = icmp sgt i16 %166, -1		; visa id: 117
+  %168 = select i1 %167, i32 32768, i32 65520		; visa id: 118
+  %169 = zext i16 %166 to i32		; visa id: 119
+  %170 = xor i32 %168, %169		; visa id: 120
+  %171 = lshr i32 %170, 4		; visa id: 121
+  %172 = add nuw nsw i32 %163, %171
+  %173 = call noundef float @llvm.fma.f32(float %38, float %1, float %2)		; visa id: 122
+  %174 = fptrunc float %173 to half		; visa id: 123
+  %175 = bitcast half %174 to i16
+  %176 = icmp sgt i16 %175, -1		; visa id: 124
+  %177 = select i1 %176, i32 32768, i32 65520		; visa id: 125
+  %178 = zext i16 %175 to i32		; visa id: 126
+  %179 = xor i32 %177, %178		; visa id: 127
+  %180 = lshr i32 %179, 4		; visa id: 128
+  %181 = add nuw nsw i32 %172, %180		; visa id: 129
+  %182 = icmp eq i32 %181, %3		; visa id: 130
+  br i1 %182, label %183, label %.preheader.preheader.._crit_edge_crit_edge, !stats.blockFrequency.digits !495, !stats.blockFrequency.scale !496		; visa id: 131
+
+183:                                              ; preds = %.preheader.preheader
+; BB1 :
+  store i32 %3, ptr addrspace(1) %4, align 4		; visa id: 133
+  br label %._crit_edge, !stats.blockFrequency.digits !497, !stats.blockFrequency.scale !496		; visa id: 136
+
+.preheader.preheader.._crit_edge_crit_edge:       ; preds = %.preheader.preheader
+; BB:
+  br label %._crit_edge, !stats.blockFrequency.digits !497, !stats.blockFrequency.scale !496
+
+._crit_edge:                                      ; preds = %.preheader.preheader.._crit_edge_crit_edge, %183
+; BB3 :
+  ret void, !stats.blockFrequency.digits !495, !stats.blockFrequency.scale !496		; visa id: 137
+}

@@ -1,0 +1,24 @@
+// ------------------------------------------------
+// HardwareCaps.txt
+// ------------------------------------------------
+// Hardware Caps :
+EUCount 		= 	256
+ThreadCount 		= 	2048
+SliceCount 		= 	4
+SubSliceCount 		= 	32
+TotalPsThreadsWindowerRange 		= 	0
+TotalVsThreads 		= 	0
+TotalVsThreads_Pocs 		= 	0
+TotalGsThreads 		= 	0
+TotalDsThreads 		= 	0
+TotalHsThreads 		= 	0
+MaxEuPerSubSlice 		= 	8
+EuCountPerPoolMax 		= 	0
+EuCountPerPoolMin 		= 	0
+MaxSlicesSupported 		= 	4
+MaxSubSlicesSupported 		= 	32
+RenderGmdId 		= 	35.11.0
+UsDeviceID 		= 	0x674f
+UsRevId 		= 	0x0
+UsDeviceID_PCH 		= 	0x0
+UsRevId_PCH 		= 	0x0

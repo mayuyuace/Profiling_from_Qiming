@@ -1,0 +1,15 @@
+[nv] static instructions per sweep kernel (one work-item, 16 elements):
+  K=0       26
+  K=1      116
+  K=2      212
+  K=4      404
+  K=8      788
+  K=16    1556
+  K=32    3092
+  K=64    4096
+  K  1->2 :  6.00 instructions / round / element
+  K  2->4 :  6.00 instructions / round / element
+  K  4->8 :  6.00 instructions / round / element
+  K  8->16:  6.00 instructions / round / element
+  K 16->32:  6.00 instructions / round / element
+  K 32->64:  1.96 instructions / round / element

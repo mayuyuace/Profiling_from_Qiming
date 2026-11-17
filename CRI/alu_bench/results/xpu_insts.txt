@@ -1,0 +1,15 @@
+[xpu] static instructions per sweep kernel (one work-item, 16 elements):
+  K=0       39
+  K=1      169
+  K=2      307
+  K=4      578
+  K=8     1124
+  K=16    2218
+  K=32    4404
+  K=64    8775
+  K  1->2 :  8.62 instructions / round / element
+  K  2->4 :  8.47 instructions / round / element
+  K  4->8 :  8.53 instructions / round / element
+  K  8->16:  8.55 instructions / round / element
+  K 16->32:  8.54 instructions / round / element
+  K 32->64:  8.54 instructions / round / element

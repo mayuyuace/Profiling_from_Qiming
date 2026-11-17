@@ -1,0 +1,17 @@
+device       : Intel(R) Graphics [0x674f]
+compute units: 256 (EUs; Xe cores = EUs / 8)
+max clock    : 2500 MHz
+launch       : 256 work-items / group, sub-group 32
+
+[fma ] 1.670 ms  10.29 T fma/s (lane-ops)  20.57 TFLOP/s
+[int ] 3.359 ms  10.23 T int-ops/s (xor+add, lane-ops)
+
+[sweep] read 1 GiB fp32 + K topk rounds per element
+  K=0       0.903 ms   1189.1 GB/s   297.26 Gelem/s  x1.00 of K=0
+  K=1       0.902 ms   1190.0 GB/s   297.50 Gelem/s  x1.00 of K=0
+  K=2       0.899 ms   1194.4 GB/s   298.61 Gelem/s  x1.00 of K=0
+  K=4       0.895 ms   1199.9 GB/s   299.96 Gelem/s  x0.99 of K=0
+  K=8       1.538 ms    698.1 GB/s   174.53 Gelem/s  x1.70 of K=0
+  K=16      3.082 ms    348.4 GB/s    87.10 Gelem/s  x3.41 of K=0
+  K=32      6.160 ms    174.3 GB/s    43.57 Gelem/s  x6.82 of K=0
+  K=64     12.316 ms     87.2 GB/s    21.80 Gelem/s  x13.64 of K=0

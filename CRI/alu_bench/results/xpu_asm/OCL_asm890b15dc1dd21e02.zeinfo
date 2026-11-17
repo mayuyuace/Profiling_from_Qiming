@@ -1,0 +1,101 @@
+---
+version:         '1.74'
+kernels:
+  - name:            _ZTSN4sycl3_V16detail18RoundedRangeKernelINS0_4itemILi1ELb1EEELi1EZ4mainEUlNS0_2idILi1EEEE_EE
+    user_attributes:
+      intel_reqd_workgroup_walk_order: [ 0, 1, 2 ]
+    execution_env:
+      grf_count:       64
+      has_4gb_buffers: true
+      has_no_stateless_write: true
+      inline_data_payload_size: 64
+      offset_to_skip_per_thread_data_load: 128
+      simd_size:       32
+      subgroup_independent_forward_progress: true
+      eu_thread_count: 8
+    payload_arguments:
+      - arg_type:        indirect_data_pointer
+        offset:          0
+        size:            8
+      - arg_type:        global_id_offset
+        offset:          8
+        size:            12
+      - arg_type:        enqueued_local_size
+        offset:          20
+        size:            12
+      - arg_type:        arg_byvalue
+        offset:          32
+        size:            8
+        arg_index:       0
+        source_offset:   0
+      - arg_type:        arg_byvalue
+        offset:          40
+        size:            8
+        arg_index:       1
+        source_offset:   0
+        is_ptr:          true
+      - arg_type:        global_size
+        offset:          48
+        size:            12
+    per_thread_payload_arguments:
+      - arg_type:        local_id
+        offset:          0
+        size:            64
+  - name:            _ZTSZ4mainEUlN4sycl3_V12idILi1EEEE_
+    user_attributes:
+      intel_reqd_workgroup_walk_order: [ 0, 1, 2 ]
+    execution_env:
+      grf_count:       64
+      has_4gb_buffers: true
+      has_no_stateless_write: true
+      inline_data_payload_size: 64
+      offset_to_skip_per_thread_data_load: 128
+      simd_size:       32
+      subgroup_independent_forward_progress: true
+      eu_thread_count: 8
+    payload_arguments:
+      - arg_type:        indirect_data_pointer
+        offset:          0
+        size:            8
+      - arg_type:        scratch_pointer
+        offset:          8
+        size:            8
+      - arg_type:        global_id_offset
+        offset:          16
+        size:            12
+      - arg_type:        enqueued_local_size
+        offset:          28
+        size:            12
+      - arg_type:        arg_bypointer
+        offset:          40
+        size:            8
+        arg_index:       0
+        addrmode:        stateless
+        addrspace:       global
+        access_type:     readwrite
+    per_thread_payload_arguments:
+      - arg_type:        local_id
+        offset:          0
+        size:            64
+kernels_misc_info:
+  - name:            _ZTSN4sycl3_V16detail18RoundedRangeKernelINS0_4itemILi1ELb1EEELi1EZ4mainEUlNS0_2idILi1EEEE_EE
+    args_info:
+      - index:           0
+        address_qualifier: __private
+        access_qualifier: NONE
+        type_name:       'class.sycl::_V1::range;8'
+        type_qualifiers: NONE
+      - index:           1
+        address_qualifier: __private
+        access_qualifier: NONE
+        type_name:       'class._ZTSZ4mainEUlN4sycl3_V12idILi1EEEE_;8'
+        type_qualifiers: NONE
+  - name:            _ZTSZ4mainEUlN4sycl3_V12idILi1EEEE_
+    args_info:
+      - index:           0
+        address_qualifier: __global
+        access_qualifier: NONE
+        type_name:       'float*;8'
+        type_qualifiers: NONE
+l1_cache_policy: wb
+...
