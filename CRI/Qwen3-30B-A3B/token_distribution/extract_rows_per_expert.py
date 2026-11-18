@@ -47,7 +47,7 @@ def main(path, out_path):
             print(f"WARNING: {n} differs from {key}")
     with open(out_path, "w") as f:
         for values in ref:
-            f.write(" ".join(map(str, values)) + "\n")
+            f.write(",".join(map(str, values)) + "\n")
     print(f"wrote {len(ref)} lines from {key} to {out_path}")
 
 
