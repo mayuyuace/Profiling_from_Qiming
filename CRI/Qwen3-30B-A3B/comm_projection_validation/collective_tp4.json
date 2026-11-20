@@ -1,0 +1,62 @@
+[
+  {
+    "tp": 4,
+    "m": 68,
+    "op": "all_reduce",
+    "input_shape": "[68,2048]",
+    "output_shape": "[68,2048]",
+    "measured_dev_min_us": 18.36424999999998,
+    "measured_dev_max_us": 775.5464000000002,
+    "measured_e2e_max_us": 38.506149940076284,
+    "lmproj_us": 13.368465608465609,
+    "measured_to_lmproj_pct": 137.36991617325762,
+    "lmproj_to_measured_pct": 72.79614255123744,
+    "message_mb": 0.278528,
+    "lmproj_hardware": "CRIWS-128G"
+  },
+  {
+    "tp": 4,
+    "m": 68,
+    "op": "all_gather",
+    "input_shape": "[68,37984]",
+    "output_shape": "[68,151936]",
+    "measured_dev_min_us": 320.51669999999996,
+    "measured_dev_max_us": 330.0900499999999,
+    "measured_e2e_max_us": 327.08044982427964,
+    "lmproj_us": 276.32402116402113,
+    "measured_to_lmproj_pct": 115.99306446461519,
+    "lmproj_to_measured_pct": 86.21205109250819,
+    "message_mb": 20.663296,
+    "lmproj_hardware": "CRIWS-128G"
+  },
+  {
+    "tp": 4,
+    "m": 4096,
+    "op": "all_reduce",
+    "input_shape": "[4096,2048]",
+    "output_shape": "[4096,2048]",
+    "measured_dev_min_us": 505.12500000000034,
+    "measured_dev_max_us": 508.94300000000004,
+    "measured_e2e_max_us": 513.2450000019162,
+    "lmproj_us": 449.8416931216931,
+    "measured_to_lmproj_pct": 112.28950266807568,
+    "lmproj_to_measured_pct": 89.0555195489617,
+    "message_mb": 16.777216,
+    "lmproj_hardware": "CRIWS-128G"
+  },
+  {
+    "tp": 4,
+    "m": 4096,
+    "op": "all_gather",
+    "input_shape": "[4096,37984]",
+    "output_shape": "[4096,151936]",
+    "measured_dev_min_us": 31521.85575000001,
+    "measured_dev_max_us": 31534.257000000012,
+    "measured_e2e_max_us": 31533.123299959698,
+    "lmproj_us": 16466.7528042328,
+    "measured_to_lmproj_pct": 191.42727242433173,
+    "lmproj_to_measured_pct": 52.23916045689282,
+    "message_mb": 1244.659712,
+    "lmproj_hardware": "CRIWS-128G"
+  }
+]
